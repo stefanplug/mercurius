@@ -5,6 +5,9 @@ from scapy.all import *
 
 def create_frame(test, test2):
 	frame = Ether()
+	#frame.dst =
+	#frame.src =
+	#frame.type =
 	return frame
 
 def create_packet():
@@ -25,11 +28,32 @@ def create_packet():
 
 def create_segment():
 	segment = TCP()
+	segment.sport = 1337
+	segment.dport = 80
+	#segment.seq =
+	#segment.ack =
+	#segment.dataofs =
+	#segment.reserved =
+	#segment.flags =
+	#segment.window =
+	#segment.chksum =
+	#segment.src =
+	#segment.dst =
+	#segment.options =
 	return segment
+
+def create_datagram():
+	datagram = UDP()
+	#datagram.sport =
+	#datagram.dport =
+	#datagram.len =
+	#datagram.chksum =
+	return datagram
 
 def main(argv):
 	packet = create_packet()
-	send(packet)
+	segment = create_segment()
+	send(packet/segment)
 
 if __name__ == '__main__':
 	main(sys.argv)
