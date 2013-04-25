@@ -4,7 +4,7 @@ import sys
 from scapy.all import *
 
 def main(argv):
-	for 1:
+	while 1:
 		recieved = sniff(filter="tcp and port 80", count=1) #prn=lambda x:x.sprintf("{TCP src: %TCP.sport%}"))
 		print recieved[0]
 
