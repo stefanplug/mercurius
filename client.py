@@ -21,24 +21,23 @@ def create_packet():
 	#packet.ttl =
 	#packet.proto =
 	#packet.chksum =
-	packet.src = '192.168.10.100'
-	packet.dst = '192.168.10.2'
+	#packet.src = '192.168.10.100'
+	packet.dst = '91.211.73.6'
 	#packet.options =
 	return packet
 
 def create_segment():
 	segment = TCP()
-	segment.sport = 1337
+	segment.sport = 10000
 	segment.dport = 80
 	#segment.seq =
 	#segment.ack =
 	#segment.dataofs =
 	#segment.reserved =
-	#segment.flags =
+	segment.flags = 0x02
 	#segment.window =
 	#segment.chksum =
-	#segment.src =
-	#segment.dst =
+	#segment.urgptr =
 	#segment.options =
 	return segment
 
