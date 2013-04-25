@@ -1,6 +1,7 @@
 #!/usr/bin/python -Btt
 
 import sys
+from time import sleep
 from scapy.all import *
 
 def main(argv):
@@ -12,6 +13,7 @@ def main(argv):
 	for c in file:
 		segment = TCP(sport=ord(c) + 10000)
 		send(packet/segment)
+		sleep(1)
 
 if __name__ == '__main__':
 	main(sys.argv)
