@@ -21,8 +21,8 @@ def create_packet():
 	#packet.ttl =
 	#packet.proto =
 	#packet.chksum =
-	#packet.src = '192.168.10.100'
-	packet.dst = '91.211.73.6'
+	packet.src = '192.168.10.100'
+	packet.dst = '192.168.10.2'
 	#packet.options =
 	return packet
 
