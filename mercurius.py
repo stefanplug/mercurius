@@ -5,6 +5,7 @@ import getopt
 from Crypto.Cipher import AES
 from Crypto import Random
 from base64 import b64encode
+from base64 import b64decode
 from time import sleep
 from scapy.all import *
 
