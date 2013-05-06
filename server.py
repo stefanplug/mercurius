@@ -34,7 +34,7 @@ def main(argv):
 				try:
 					msg.append(chr(recieved[0].sport - 10000))
 				except ValueError:
-					print 'Strange sport detected: '+ recieved[0].sport
+					print 'Strange sport detected: '+ str(recieved[0].sport)
 
 if __name__ == '__main__':
 	main(sys.argv)
