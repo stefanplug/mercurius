@@ -68,7 +68,7 @@ def main(argv):
 			else:
 				usage()
 		elif opt in ("-n", "--network"):
-			if mode == 2 and server == 0:
+			if mode == 2:
 				network = arg
 			else:
 				usage()
@@ -84,7 +84,7 @@ def main(argv):
 			if mode == 1:
 				msg = recieve_sp()
 			elif mode == 2:
-				msg = recieve_dip6()
+				msg = recieve_dip6(network)
 			clear = decrypt(key, msg)
 			if clear != -1:
 				print 'Recieved: '+ clear
@@ -117,31 +117,40 @@ def recieve_sp():
 				except ValueError:
 					print 'Strange sport detected: '+ str(recieved[0].sport)
 
-def recieve_dip6():
+def recieve_dip6(network):
 	msg = []
-	print 'not yet'
+	while 1:
+		recieved = sniff(filter='net '+ network +'/64', count=1)
+		if recieved[0].dst == network + 'FFF':
+			print 'YOLO!'
+			#return str(msg)
+#		else:
+#			try:
+#				msg.append(chr(recieved[0].sport - 10000))
+#			except ValueError:
+#				print 'Strange sport detected: '+ str(recieved[0].sport)
 
 def send_sp(msg, ipv6_dst):
 	packet = IPv6(dst=ipv6_dst)
 	segment = TCP(dport=80, flags=0x02)
 	print msg
 	for c in msg:
-		segment = TCP(sport=ord(c) + 10000)
+		segment = TCP(sport = ord(c) + 10000)
 		send(packet/segment)
 		sleep(1)
-	segment = TCP(sport=30000)
+	segment = TCP(sport = 30000)
 	send(packet/segment)
 
 def send_dip6(msg, network):
-	subnet = network
 	segment = TCP(dport=80, flags=0x02)
 	print msg
 	for c in msg:
 		host = '%x' % ord(c)
-		dest = subnet + host
-		packet = IPv6(dst=dest)
+		packet = IPv6(dst = network + host)
 		send(packet/segment)
 		sleep(1)
+	packet = IPv6(dst = network + 'FFF')
+	send(packet/segment)
 
 def encrypt(key, clear):
 	BLOCK_SIZE = 32
