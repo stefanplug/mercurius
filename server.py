@@ -24,12 +24,12 @@ def main(argv):
 	msg = []
 	while 1:
 		recieved = sniff(filter="tcp and port 80", count=1)
-		if recieved[0].sport != 30000:
-			msg.append(chr(recieved[0].sport - 10000))
-			print msg
-		else:
+		if recieved[0].sport == 30000:
 			clear = decrypt(key, str(msg))
 			print clear
+		else:
+			msg.append(chr(recieved[0].sport - 10000))
+			print msg
 
 if __name__ == '__main__':
 	main(sys.argv)
