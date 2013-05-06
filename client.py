@@ -17,6 +17,8 @@ def encrypt(key, clear):
 	return msg
 
 def send_msg(msg):
+	packet = IP(dst='192.168.10.2')
+	segment = TCP(dport=80, flags=0x02)
 	print msg
 	for c in msg:
 		segment = TCP(sport=ord(c) + 10000)
@@ -26,9 +28,6 @@ def send_msg(msg):
 	send(packet/segment)
 
 def main(argv):
-	packet = IP(dst='192.168.10.2')
-	segment = TCP(dport=80, flags=0x02)
-
 	key = ':Yjds52%9wnsjp>)'
 	clear = 'mrbaasman : P@s5w0Rt'
 	msg = encrypt(key, clear)
