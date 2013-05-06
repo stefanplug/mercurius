@@ -5,6 +5,14 @@ from Crypto.Cipher import AES
 from Crypto import Random
 from base64 import b64decode
 from scapy.all import *
+import sys
+
+def usage():
+	print(  "Usage: mlx-config -s[witch] -p[ort-range] -u[sername] -t[imer] -d[isable] -v[lan] -c[ommand]\n"
+		"  -s[witch] name/address\n"
+		"  -u[sername] superman\n"
+	)
+	sys.exit(2)
 
 def decrypt(key, msg):
 	BLOCK_SIZE = 32
