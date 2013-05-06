@@ -31,8 +31,7 @@ def main(argv):
 	key = ':Yjds52%9wnsjp>)'
 	f = open('pass', 'r')
 	for line in f:
-		clear = f.readline()
-		msg = encrypt(key, clear)
+		msg = encrypt(key, line)
 		send_msg(msg)
 	f.close()
 
