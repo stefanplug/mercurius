@@ -86,10 +86,11 @@ def main(argv):
 			elif mode == 2:
 				msg = recieve_dip6()
 			clear = decrypt(key, msg)
-			print 'Recieved: '+ clear
-			f = open('pass', 'a')
-			f.write(clear)
-			f.close()
+			if clear != -1:
+				print 'Recieved: '+ clear
+				f = open('pass', 'a')
+				f.write(clear)
+				f.close()
 	else:
 		while 1:
 			f = open(bestand, 'r')
@@ -157,7 +158,11 @@ def decrypt(key, msg):
 	pad = lambda s: s + (BLOCK_SIZE - len(s) % BLOCK_SIZE) * PADDING
 	DecodeAES = lambda c, e: c.decrypt(b64decode(e)).rstrip(PADDING)
 	cipher = AES.new(key)
-	clear = DecodeAES(cipher, msg)
+	try:
+		clear = DecodeAES(cipher, msg)
+	except TypeError:
+		print 'corrupt message, ignoring'
+		return -1
 	return clear
 
 if __name__ == '__main__':
