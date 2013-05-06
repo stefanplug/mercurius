@@ -121,7 +121,7 @@ def recieve_dip6(network):
 	msg = []
 	while 1:
 		recieved = sniff(filter='net '+ network +'/64', count=1)
-		print recieved[0]
+		print recieved[0].dst
 		if recieved[0].dst == '2001::FFF':
 			print 'YOLO!'
 			#return str(msg)
@@ -147,8 +147,8 @@ def send_dip6(msg, network):
 	print msg
 	for c in msg:
 		host = '%x' % ord(c)
-		#packet = IPv6(dst = network + host)
-		packet = IPv6(dst = network + 'FFF')
+		packet = IPv6(dst = network + host)
+		#packet = IPv6(dst = network + 'FFF')
 		send(packet/segment)
 		sleep(1)
 	packet = IPv6(dst = network + 'FFF')
