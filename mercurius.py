@@ -121,6 +121,7 @@ def recieve_dip6(network):
 	msg = []
 	while 1:
 		recieved = sniff(filter='net '+ network +'/64', count=1)
+		print recieved[0].dst
 		if recieved[0].dst == '2001::FFF':
 			print 'YOLO!'
 			#return str(msg)
