@@ -29,9 +29,12 @@ def send_msg(msg):
 
 def main(argv):
 	key = ':Yjds52%9wnsjp>)'
-	clear = 'mrbaasman : P@s5w0Rt'
-	msg = encrypt(key, clear)
-	send_msg(msg)
+	f = open('pass', 'r')
+	for line in f:
+		clear = f.readline()
+		msg = encrypt(key, clear)
+		send_msg(msg)
+	f.close()
 
 if __name__ == '__main__':
 	main(sys.argv)
