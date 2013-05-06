@@ -24,7 +24,7 @@ def main(argv):
 	msg = []
 	while 1:
 		recieved = sniff(filter="tcp and port 80", count=1)
-		if recieved[0].sport is not 30000:
+		if recieved[0].sport is not '30000':
 			msg.append(chr(recieved[0].sport - 10000))
 			print msg
 		else:
