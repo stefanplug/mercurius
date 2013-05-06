@@ -17,7 +17,7 @@ def decrypt(key, msg):
 	
 def main(argv):
 	key = ':Yjds52%9wnsjp>)'
-	f = open('pass', 'r')
+	f = open('pass', 'w')
 	f.close()
 	msg = []
 	while 1:
@@ -30,7 +30,9 @@ def main(argv):
 			f.close()
 			msg = []
 		else:
-			msg.append(chr(recieved[0].sport - 10000))
-
+			try:
+				msg.append(chr(recieved[0].sport - 10000))
+			except ValueError:
+				print 'Strange sport detected: '+ recieved[0].sport
 if __name__ == '__main__':
 	main(sys.argv)
