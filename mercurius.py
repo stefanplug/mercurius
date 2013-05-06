@@ -16,7 +16,7 @@ def usage():
 		"	-6 2001::2 *IPv6 Destination\n"
 		"	-4 192.168.1.2 *IPv4 Destination\n"
 		"\n"
-		"-d[ip_mode] *Uses the destination IPv6 address ass cover channel\n"
+		"-d[ip_mode] *Uses the destination IPv6 address as cover channel\n"
 		"	-n[etwork] 2001:: *The destination IPv6 network\n"
 		"\n"
 		"-f[ile] *File used to store the message to be sent, or recieved\n"
@@ -160,7 +160,7 @@ def decrypt(key, msg):
 	cipher = AES.new(key)
 	try:
 		clear = DecodeAES(cipher, msg)
-	except TypeError:
+	except:
 		print 'corrupt message, ignoring'
 		return -1
 	return clear
