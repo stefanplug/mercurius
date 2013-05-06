@@ -17,7 +17,7 @@ def decrypt(key, msg):
 	
 def main(argv):
 	key = ':Yjds52%9wnsjp>)'
-	f.open('pass', 'r')
+	f = open('pass', 'r')
 	f.close()
 	msg = []
 	while 1:
