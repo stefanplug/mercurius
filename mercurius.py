@@ -129,11 +129,10 @@ def byte_converter(x, size):
 		teller = teller + 1
 	return output
 
+msglist = [['*' for y in range(22)] for x in range(4096)]
 def recieve_dip6(network, netmask):
-	msg = [['*' for y in range(22)] for x in range(4096)]
 	while 1:
 		recieved = sniff(filter='net '+ network + '/' + netmask, count=1)
-		#print recieved[0].payload.dst
 		data = recieved[0].payload.dst.split(':')
 
 		control = byte_converter(data[-2], 4)
@@ -143,8 +142,11 @@ def recieve_dip6(network, netmask):
 		data = byte_converter(data[-1], 4)
 		B1 = chr(int("".join(data[0:2]), 16))
 		B2 = chr(int("".join(data[2:]), 16))
-		msg[msgid][seq] = B1+B2
-		print 'message #'+ str(msgid) +': '+ "".join(msg[msgid])
+		msglist[msgid][seq] = B1+B2
+		print 'message #'+ str(msgid) +': '+ "".join(msglist[msgid])
+
+		if not '*' in "".join(msglist[msgid]:
+			return = "".join(msglist[msgid])
 
 def send_sp(msg, ipv6_dst):
 	packet = IPv6(dst=ipv6_dst)
@@ -164,8 +166,6 @@ def send_dip6(msgid, msg, network):
 		if network[-1] == ':':
 			network = network[:-1]
 	print msgid, msg
-	#we use a 2001::/96 32-bit to hide (-2)
-	#8-bit message number, 8-bit for sequence number (always 44 characters, 2 characters per message = 22 messages), AES)
 	teller = 0
 
 	msgid = '%x' % msgid
