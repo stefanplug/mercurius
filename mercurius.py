@@ -145,21 +145,27 @@ def send_sp(msg, ipv6_dst):
 
 def send_dip6(msgid, msg, network):
 	segment = TCP(dport=80, flags=0x02)
-	network.split('/')
+	network = network.split('/')
+	print network[0]
+	for i in range(2):
+		if network[0][-1] == ':':
+			network[0] = network[0][:-1]
 	print msgid, msg
 	#we use a 2001::/96 32-bit to hide (-2)
 	#12-bit message number, 4-bit for sequence number (always 16 because of AES)
 	teller = 0
 	for seq in range(16):
 		host = []
+		host.append(':')
 		host.append('%x' % msgid)
 		host.append('%x' % seq)
-		host.append(':')
 
+		host.append(':')
 		for i in range(2):
 			host.append('%x' % ord(msg[teller]))
 			teller = teller + 1
 		print "".join(host)
+		print network[0] + "".join(host)
 		packet = IPv6(dst = network[0] + "".join(host))
 		send(packet/segment)
 		sleep(1)
