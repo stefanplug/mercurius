@@ -136,7 +136,7 @@ def recieve_dip6(network, netmask):
 		print recieved[0].payload.dst
 		data = recieved[0].payload.dst.split(':')
 		control = byte_converter(data[-2])
-		data = byte_(converter(data[-1])
+		data = byte_converter(data[-1])
 		msgid = int("".join(control[0:3]), 16)
 		seq = int(control[3], 16)
 		msg[msgid][seq] = data
