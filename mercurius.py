@@ -119,18 +119,13 @@ def recieve_sp():
 
 def recieve_dip6(network):
 	msg = [['*' for y in range(16)] for x in range(4096)]
-	print "".join(msg[1024])
 
+	network = network.split('/')
 	while 1:
-		recieved = sniff(filter='net '+ network, count=1)
+		recieved = sniff(filter='net '+ network[0] + '/' + network[1], count=1)
 		print recieved[0].payload.dst
-
-#	return str(msg)
-#		else:
-#			try:
-#				msg.append(chr(recieved[0].sport - 10000))
-#			except ValueError:
-#				print 'Strange sport detected: '+ str(recieved[0].sport)
+		data = recieved[0].payload.ds.split(network[0])
+		print data
 
 def send_sp(msg, ipv6_dst):
 	packet = IPv6(dst=ipv6_dst)
