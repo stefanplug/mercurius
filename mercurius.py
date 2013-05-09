@@ -69,7 +69,7 @@ def main(argv):
 				usage()
 		elif opt in ("-n", "--network"):
 			if mode == 2:
-				network = arg
+				network = arg.split
 			else:
 				usage()
 		elif opt in ("-f", "--file"):
@@ -79,12 +79,16 @@ def main(argv):
 	if mode == 0:
 		usage()
 
+	network = network.split('/')
+	netmask = network[1]
+	network = network[0]
+
 	if server == 1:
 		while 1:
 			if mode == 1:
 				msg = recieve_sp()
 			elif mode == 2:
-				msg = recieve_dip6(network)
+				msg = recieve_dip6(network, netmask)
 			clear = decrypt(key, msg)
 			if clear != -1:
 				print 'Recieved: '+ clear
@@ -117,14 +121,16 @@ def recieve_sp():
 				except ValueError:
 					print 'Strange sport detected: '+ str(recieved[0].sport)
 
-def recieve_dip6(network):
+def recieve_dip6(network, netmask):
 	msg = [['*' for y in range(16)] for x in range(4096)]
-
-	network = network.split('/')
 	while 1:
-		recieved = sniff(filter='net '+ network[0] + '/' + network[1], count=1)
+		recieved = sniff(filter='net '+ network + '/' + netmask, count=1)
 		print recieved[0].payload.dst
-		data = recieved[0].payload.ds.split(network[0])
+		
+		data = recieved[0].payload.dst.split(network[0]).split(':')
+		control = data[-2]
+		data = data[-1]
+		print control
 		print data
 
 def send_sp(msg, ipv6_dst):
@@ -140,11 +146,10 @@ def send_sp(msg, ipv6_dst):
 
 def send_dip6(msgid, msg, network):
 	segment = TCP(dport=80, flags=0x02)
-	network = network.split('/')
-	print network[0]
+	print network
 	for i in range(2):
-		if network[0][-1] == ':':
-			network[0] = network[0][:-1]
+		if network[-1] == ':':
+			network = network[:-1]
 	print msgid, msg
 	#we use a 2001::/96 32-bit to hide (-2)
 	#12-bit message number, 4-bit for sequence number (always 16 because of AES)
@@ -160,8 +165,8 @@ def send_dip6(msgid, msg, network):
 			host.append('%x' % ord(msg[teller]))
 			teller = teller + 1
 		print "".join(host)
-		print network[0] + "".join(host)
-		packet = IPv6(dst = network[0] + "".join(host))
+		print network + "".join(host)
+		packet = IPv6(dst = network + "".join(host))
 		send(packet/segment)
 		sleep(1)
 
