@@ -33,7 +33,7 @@ def main(argv):
 	#defaults
 	server = 0
 	mode = 0
-	network = '2001::1\96'
+	network = '2001:0:0:0:0:1::/96'
 	ipv = 6
 	ipv6_dst = '2001::2'
 	ipv4_dst = '192.168.10.2'
