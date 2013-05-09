@@ -133,17 +133,16 @@ def recieve_dip6(network, netmask):
 	msg = [['*' for y in range(16)] for x in range(4096)]
 	while 1:
 		recieved = sniff(filter='net '+ network + '/' + netmask, count=1)
-		print recieved[0].payload.dst
+		#print recieved[0].payload.dst
 		data = recieved[0].payload.dst.split(':')
 		control = byte_converter(data[-2])
-		data = byte_converter(data[-1])
 		msgid = int("".join(control[0:3]), 16)
 		seq = int(control[3], 16)
-		msg[msgid][seq] = data
+		data = byte_converter(data[-1])
+		B1 = chr(int("".join(data[0:2]), 16))
+		B2 = chr(int("".join(data[2:]), 16))
+		msg[msgid][seq] = B1+B2
 		print 'message #'+ str(msgid) +': '+ "".join(msg[msgid])
-		sys.exit()
-
-
 
 def send_sp(msg, ipv6_dst):
 	packet = IPv6(dst=ipv6_dst)
