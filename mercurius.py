@@ -123,7 +123,7 @@ def recieve_dip6(network):
 
 	while 1:
 		recieved = sniff(filter='net '+ network +'/64', count=1)
-		print recieved[0].dst
+		print recieved[0].src
 
 
 #	return str(msg)
