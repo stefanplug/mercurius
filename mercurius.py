@@ -145,7 +145,7 @@ def recieve_dip6(network, netmask):
 		msglist[msgid][seq] = B1+B2
 		print 'message #'+ str(msgid) +': '+ "".join(msglist[msgid])
 
-		if not '*' in "".join(msglist[msgid]:
+		if not '*' in "".join(msglist[msgid]):
 			return = "".join(msglist[msgid])
 
 def send_sp(msg, ipv6_dst):
