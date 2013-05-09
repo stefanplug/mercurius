@@ -135,9 +135,11 @@ def recieve_dip6(network, netmask):
 		recieved = sniff(filter='net '+ network + '/' + netmask, count=1)
 		#print recieved[0].payload.dst
 		data = recieved[0].payload.dst.split(':')
+
 		control = byte_converter(data[-2])
-		msgid = int("".join(control[0:3]), 16)
-		seq = int(control[3], 16)
+		msgid = int("".join(control[0:2]), 16)
+		seq = int("".join(control[3:]), 16)
+
 		data = byte_converter(data[-1])
 		B1 = chr(int("".join(data[0:2]), 16))
 		B2 = chr(int("".join(data[2:]), 16))
@@ -162,7 +164,6 @@ def send_dip6(msgid, msg, network):
 		if network[-1] == ':':
 			network = network[:-1]
 	print msgid, msg
-	print len(msg)
 	#we use a 2001::/96 32-bit to hide (-2)
 	#8-bit message number, 8-bit for sequence number (always 44 characters, 2 characters per message = 22 messages), AES)
 	teller = 0
