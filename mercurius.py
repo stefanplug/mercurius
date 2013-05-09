@@ -138,7 +138,7 @@ def recieve_dip6(network, netmask):
 
 		control = byte_converter(data[-2], 4)
 		msgid = int("".join(control[0:2]), 16)
-		seq = int("".join(control[3:]), 16)
+		seq = int("".join(control[2:]), 16)
 
 		data = byte_converter(data[-1], 4)
 		B1 = chr(int("".join(data[0:2]), 16))
