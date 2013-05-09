@@ -33,7 +33,7 @@ def main(argv):
 	#defaults
 	server = 0
 	mode = 0
-	network = '2001::'
+	network = '2001::1\96'
 	ipv = 6
 	ipv6_dst = '2001::2'
 	ipv4_dst = '192.168.10.2'
@@ -122,9 +122,8 @@ def recieve_dip6(network):
 	print "".join(msg[1024])
 
 	while 1:
-		recieved = sniff(filter='net '+ network +'/64', count=1)
-		print recieved[0].src
-
+		recieved = sniff(filter='net '+ network, count=1)
+		print recieved[0].payload.dst
 
 #	return str(msg)
 #		else:
@@ -146,6 +145,7 @@ def send_sp(msg, ipv6_dst):
 
 def send_dip6(msgid, msg, network):
 	segment = TCP(dport=80, flags=0x02)
+	network.split('/')
 	print msgid, msg
 	#we use a 2001::/96 32-bit to hide (-2)
 	#12-bit message number, 4-bit for sequence number (always 16 because of AES)
@@ -160,7 +160,7 @@ def send_dip6(msgid, msg, network):
 			host.append('%x' % ord(msg[teller]))
 			teller = teller + 1
 		print "".join(host)
-		packet = IPv6(dst = network + "".join(host))
+		packet = IPv6(dst = network[0] + "".join(host))
 		send(packet/segment)
 		sleep(1)
 
