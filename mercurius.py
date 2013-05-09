@@ -121,9 +121,9 @@ def recieve_sp():
 				except ValueError:
 					print 'Strange sport detected: '+ str(recieved[0].sport)
 
-def byte_converter(x):
+def byte_converter(x, size):
 	teller = len(x) - (len(x) * 2)
-	output = ['0' for y in range(4)]
+	output = ['0' for y in range(size)]
 	for c in x:
 		output[teller] = c
 		teller = teller + 1
@@ -136,11 +136,11 @@ def recieve_dip6(network, netmask):
 		#print recieved[0].payload.dst
 		data = recieved[0].payload.dst.split(':')
 
-		control = byte_converter(data[-2])
+		control = byte_converter(data[-2], 4)
 		msgid = int("".join(control[0:2]), 16)
 		seq = int("".join(control[3:]), 16)
 
-		data = byte_converter(data[-1])
+		data = byte_converter(data[-1], 4)
 		B1 = chr(int("".join(data[0:2]), 16))
 		B2 = chr(int("".join(data[2:]), 16))
 		msg[msgid][seq] = B1+B2
@@ -168,19 +168,24 @@ def send_dip6(msgid, msg, network):
 	#8-bit message number, 8-bit for sequence number (always 44 characters, 2 characters per message = 22 messages), AES)
 	teller = 0
 
+	msgid = '%x' % msgid
+	msgid = byte_converter(msgid, 2)
 	for seq in range(22):
-		host = []
-		host.append(':')
-		host.append('%x' % msgid)
-		host.append('%x' % seq)
+		dest = [':']
+		seq = '%x' % seq
+		seq = byte_converter(seq, 2)
+		dest = dest + msgid + seq + [':']
 
-		host.append(':')
-		for i in range(2):
-			host.append('%x' % ord(msg[teller]))
-			teller = teller + 1
-		print "".join(host)
-		print network + "".join(host)
-		packet = IPv6(dst = network + "".join(host))
+		B1 = '%x' % ord(msg[teller])
+		B1 = byte_converter(B1, 2)
+		teller = teller + 1
+		B2 = '%x' % ord(msg[teller])
+		B2 = byte_converter(B2, 2)
+		teller = teller + 1
+		dest = dest + B1 + B2
+		
+		print network + "".join(dest)
+		packet = IPv6(dst = network + "".join(dest))
 		send(packet/segment)
 		sleep(1)
 
