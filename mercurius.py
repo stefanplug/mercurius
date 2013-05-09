@@ -161,7 +161,7 @@ def send_sp(msg, ipv6_dst):
 	send(packet/segment)
 
 def send_dip6(msgid, msg, network):
-	segment = TCP(dport=80, flags=0x02)
+	segment = TCP(dport=80, sport=RandNum(1024, 65535), flags=0x02)
 	print network
 	for i in range(2):
 		if network[-1] == ':':
