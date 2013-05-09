@@ -121,16 +121,29 @@ def recieve_sp():
 				except ValueError:
 					print 'Strange sport detected: '+ str(recieved[0].sport)
 
+def byte_converter(x):
+	teller = len(x) - (len(x) * 2)
+	output = ['0' for y in range(4)]
+	for c in x:
+		output[teller] = c
+		teller = teller + 1
+	return output
+
 def recieve_dip6(network, netmask):
 	msg = [['*' for y in range(16)] for x in range(4096)]
 	while 1:
 		recieved = sniff(filter='net '+ network + '/' + netmask, count=1)
 		print recieved[0].payload.dst
 		data = recieved[0].payload.dst.split(':')
-		control = data[-2]
-		data = data[-1]
-		print control
-		print data
+		control = byte_converter(data[-2])
+		data = byte_(converter(data[-1])
+		msgid = int("".join(control[0:3]), 16)
+		seq = int(control[3], 16)
+		msg[msgid][seq] = data
+		print 'message #'+ str(msgid) +': '+ "".join(msg[msgid])
+		sys.exit()
+
+
 
 def send_sp(msg, ipv6_dst):
 	packet = IPv6(dst=ipv6_dst)
