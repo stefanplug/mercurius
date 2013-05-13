@@ -136,7 +136,10 @@ def recieve_dip6(network, netmask):
 		#recieved = sniff(filter=ip6, count=1)
 		recieved = sniff(filter='net '+ network + '/' + netmask, count=3)
 		#data = recieved[0].payload.dst.split(':')
-		data = recieved[2].payload.dst.split(':')
+		try:
+			data = recieved[2].payload.dst.split(':')
+		except:
+			print 'recieved a bad destination address'
 		print data
 
 		try:
