@@ -140,7 +140,6 @@ def recieve_dip6(network, netmask):
 			data = recieved[2].payload.dst.split(':')
 		except:
 			print 'recieved a bad destination address'
-		print data
 
 		try:
 			control = byte_converter(data[-2], 4)
@@ -155,7 +154,8 @@ def recieve_dip6(network, netmask):
 				msglist[msgid][seq] = B1+B2
 				print 'message #'+ str(msgid) +': '+ "".join(msglist[msgid])
 				if not '*' in "".join(msglist[msgid]):
-					return "".join(msglist[msgid])
+					msg = [msgid, "".join(msglist[msgid])]
+					return msg
 		except:
 			print 'recieved invalid dst IP, ignoring'
 
@@ -216,9 +216,10 @@ def decrypt(key, msg):
 	DecodeAES = lambda c, e: c.decrypt(b64decode(e)).rstrip(PADDING)
 	cipher = AES.new(key)
 	try:
-		clear = DecodeAES(cipher, msg)
+		clear = DecodeAES(cipher, msg[1])
 	except:
 		print 'corrupt message, ignoring'
+		msglist = [msgid, '*' for y in range(22)]
 		return -1
 	return clear
 
