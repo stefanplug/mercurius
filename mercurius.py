@@ -69,7 +69,7 @@ def main(argv):
 				usage()
 		elif opt in ("-n", "--network"):
 			if mode == 2:
-				network = arg.split
+				network = arg
 			else:
 				usage()
 		elif opt in ("-f", "--file"):
@@ -189,8 +189,6 @@ def send_dip6(msgid, msg, network):
 		packet = IPv6(dst = network + "".join(dest))
 		send(packet/segment)
 		sleep(1)
-
-
 
 def encrypt(key, clear):
 	BLOCK_SIZE = 32
