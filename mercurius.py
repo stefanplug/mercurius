@@ -133,7 +133,7 @@ msglist = [['*' for y in range(22)] for x in range(4096)]
 def recieve_dip6(network, netmask):
 	while 1:
 		print 'filter=net '+ network + '/' + netmask
-		recieved = sniff(filter='dst net'+ network + '/' + netmask, count=1)
+		recieved = sniff(filter='dst net '+ network + '/' + netmask, count=1)
 		data = recieved[0].payload.dst.split(':')
 		print data
 
