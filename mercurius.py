@@ -135,19 +135,21 @@ def recieve_dip6(network, netmask):
 		recieved = sniff(filter='net '+ network + '/' + netmask, count=1)
 		data = recieved[0].payload.dst.split(':')
 
-		control = byte_converter(data[-2], 4)
-		msgid = int("".join(control[0:2]), 16)
-		seq = int("".join(control[2:]), 16)
-		if not '*' in "".join(msglist[msgid]):
-			print 'We already know this message, Ignoring'
-		else:
-			data = byte_converter(data[-1], 4)
-			B1 = chr(int("".join(data[0:2]), 16))
-			B2 = chr(int("".join(data[2:]), 16))
-			msglist[msgid][seq] = B1+B2
-			print 'message #'+ str(msgid) +': '+ "".join(msglist[msgid])
+		try control = byte_converter(data[-2], 4):
+			msgid = int("".join(control[0:2]), 16)
+			seq = int("".join(control[2:]), 16)
 			if not '*' in "".join(msglist[msgid]):
-				return "".join(msglist[msgid])
+				print 'We already know this message, Ignoring'
+			else:
+				data = byte_converter(data[-1], 4)
+				B1 = chr(int("".join(data[0:2]), 16))
+				B2 = chr(int("".join(data[2:]), 16))
+				msglist[msgid][seq] = B1+B2
+				print 'message #'+ str(msgid) +': '+ "".join(msglist[msgid])
+				if not '*' in "".join(msglist[msgid]):
+					return "".join(msglist[msgid])
+		except:
+			print 'recieved invalid dst IP, ignoring'
 
 def send_sp(msg, ipv6_dst):
 	packet = IPv6(dst=ipv6_dst)
