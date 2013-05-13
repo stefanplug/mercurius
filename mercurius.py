@@ -134,10 +134,10 @@ def recieve_dip6(network, netmask):
 	while 1:
 		filt = "ip6 and dst net "+ network + "/" + netmask
 		print filt 
-		recieved = sniff(filter=filt, count=1)
+		recieved = sniff("ip6 and dst net "+ network + "/" + netmask)
 		#recieved = sniff(filter='ip6 and net '+ network + '/' + netmask, count=1)
-		data2 = recieved[0]
-		data = recieved[0].payload.dst.split(':')
+		#data = recieved[0].payload.dst.split(':')
+		data = recieved[0].payload.dst
 		print data2
 
 		try:
