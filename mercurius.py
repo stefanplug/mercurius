@@ -132,7 +132,7 @@ def byte_converter(x, size):
 msglist = [['*' for y in range(22)] for x in range(4096)]
 def recieve_dip6(network, netmask):
 	while 1:
-		filt = "ip6 and net "+ network + "/" + netmask
+		filt = "ip6 and dst net "+ network + "/" + netmask
 		print filt 
 		recieved = sniff(filter=filt, count=1)
 		#recieved = sniff(filter='ip6 and net '+ network + '/' + netmask, count=1)
