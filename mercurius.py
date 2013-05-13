@@ -136,7 +136,7 @@ def recieve_dip6(network, netmask):
 		data = recieved[0].payload.dst.split(':')
 
 		try:
-			control = byte_converter(data[-2], 4):
+			control = byte_converter(data[-2], 4)
 			msgid = int("".join(control[0:2]), 16)
 			seq = int("".join(control[2:]), 16)
 			if not '*' in "".join(msglist[msgid]):
