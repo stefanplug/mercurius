@@ -134,9 +134,9 @@ def recieve_dip6(network, netmask):
 	while 1:
 		#filt = lambda (r): r[IP].src == '192.168.1.1'
 		#recieved = sniff(filter=ip6, count=1)
-		recieved = sniff(filter='net '+ network + '/' + netmask, count=2)
+		recieved = sniff(filter='net '+ network + '/' + netmask, count=3)
 		#data = recieved[0].payload.dst.split(':')
-		data = recieved[0].payload.dst
+		data = recieved[2].payload.dst.split(':')
 		print data
 
 		try:
