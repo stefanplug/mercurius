@@ -134,6 +134,7 @@ def recieve_dip6(network, netmask):
 	while 1:
 		recieved = sniff(filter='net '+ network + '/' + netmask, count=1)
 		data = recieved[0].payload.dst.split(':')
+		print data
 
 		try:
 			control = byte_converter(data[-2], 4)
