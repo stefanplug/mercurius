@@ -132,13 +132,12 @@ def byte_converter(x, size):
 msglist = [['*' for y in range(22)] for x in range(4096)]
 def recieve_dip6(network, netmask):
 	while 1:
-		filt = "ip6 and dst net "+ network + "/" + netmask
-		print filt 
-		recieved = sniff("ip6 and dst net "+ network + "/" + netmask)
-		#recieved = sniff(filter='ip6 and net '+ network + '/' + netmask, count=1)
+		#filt = lambda (r): r[IP].src == '192.168.1.1'
+		#recieved = sniff(filter=ip6, count=1)
+		recieved = sniff(filter='net '+ network + '/' + netmask, count=2)
 		#data = recieved[0].payload.dst.split(':')
 		data = recieved[0].payload.dst
-		print data2
+		print data
 
 		try:
 			control = byte_converter(data[-2], 4)
