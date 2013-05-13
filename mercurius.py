@@ -219,7 +219,7 @@ def decrypt(key, msg):
 		clear = DecodeAES(cipher, msg[1])
 	except:
 		print 'corrupt message, ignoring'
-		msglist = [msgid, '*' for y in range(22)]
+		msglist = [msgid['*' for y in range(22)]]
 		return -1
 	return clear
 
