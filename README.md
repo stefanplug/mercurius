@@ -1,4 +1,4 @@
 mercurius
 =========
 
-Sending data using TCP source ports as a cover channel
+Sending data using IPv6 dest adresses as covert channel
