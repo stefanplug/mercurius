@@ -11,7 +11,7 @@ from scapy.all import *
 
 def usage():
 	print("Usage: mercurius -S[erver] -s[port_mode] -d[ip_mode] -f[ile] -k[ey]\n"
-		"-S[erver] *Listen for incomming covered messages"
+		"-S[erver] *Listen for incomming covered messages\n"
 		"-s[port_mode] *Uses TCP source ports as cover channel\n"
 		"	-6 2001::2 *IPv6 Destination\n"
 		"	-4 192.168.1.2 *IPv4 Destination\n"
