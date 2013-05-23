@@ -32,13 +32,14 @@ def main(argv):
 
 	#defaults
 	server = 0
-	mode = 0
-	network = '2001:0:0:0:0:1::/96'
+	mode = 2
+	network = '2001:610:158:2360:2::/96'
 	ipv = 6
 	ipv6_dst = '2001::2'
 	ipv4_dst = '192.168.10.2'
 	key = ':Yjds52%9wnsjp>)'
 	bestand = 'pass'
+	sourceip = '2001:610:158:2070::2'
 
 	for opt, arg in opts:
 		if opt in ("-h", "--help"):
@@ -103,7 +104,7 @@ def main(argv):
 				if mode == 1:
 					send_sp(msg, ipv6_dst)
 				elif mode == 2:
-					send_dip6(msgid, msg, network)
+					send_dip6(msgid, msg, network, sourceip)
 				sleep(1)
 			f.close()
 			sleep(10)
@@ -170,7 +171,7 @@ def send_sp(msg, ipv6_dst):
 	segment = TCP(sport = 30000)
 	send(packet/segment)
 
-def send_dip6(msgid, msg, network):
+def send_dip6(msgid, msg, network, sourceip):
 	segment = TCP(dport=80, sport=RandNum(1024, 65535), flags=0x02)
 	print network
 	for i in range(2):
@@ -196,7 +197,7 @@ def send_dip6(msgid, msg, network):
 		dest = dest + B1 + B2
 		
 		print network + "".join(dest)
-		packet = IPv6(dst = network + "".join(dest))
+		packet = IPv6(src = sourceip, dst = network + "".join(dest))
 		send(packet/segment)
 		sleep(1)
 
