@@ -197,8 +197,8 @@ def send_dip6(msgid, msg, network, sourceip):
 		dest = dest + B1 + B2
 		
 		print network + "".join(dest)
-		#packet = IPv6(src = sourceip, dst = network + "".join(dest))
-		packet = IPv6(dst = network + "".join(dest))
+		packet = IPv6(src = sourceip, dst = network + "".join(dest))
+		#packet = IPv6(dst = network + "".join(dest))
 		send(packet/segment)
 		sleep(1)
 
